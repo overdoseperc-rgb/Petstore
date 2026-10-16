@@ -1,39 +1,28 @@
 # Результаты тестирования Petstore API
 
-## Объект тестирования
+Проект: C# (.NET 8), NUnit. API: https://petstore.swagger.io/v2/
 
-- API: https://petstore.swagger.io/v2/
-- Язык: C# (.NET 8)
-- Тестовый фреймворк: NUnit
-- Проект: `Petstore.Tests.csproj`
+## Четыре автоматизированных теста
 
-## Результат, указанный в README
+| Тест | Проверка |
+| --- | --- |
+| `PetCreateAndGetTest` | POST /pet, GET /pet/{id}, проверка ID и имени |
+| `PetUpdateAndDeleteTest` | POST /pet, PUT /pet, GET /pet/{id}, DELETE /pet, проверка изменённых полей и HTTP 404 |
+| `StoreInventoryTest` | GET /store/inventory, проверка количества товаров |
+| `StoreOrderTest` | POST /store/order, GET /store/order/{id}, DELETE /store/order/{id}, проверка полей и HTTP 404 |
 
-| Дата | Всего тестов | Успешно | Ошибок |
-| --- | ---: | ---: | ---: |
-| 09.10.2026 | 2 | 2 | 0 |
+## Актуальный результат
 
-**Источник:** запись в `README.md`, существовавшая до добавления этого отчёта. Исходный лог или TRX-файл запуска от 09.10.2026 в репозитории отсутствует, поэтому результат не является независимо подтверждённым.
+Проверяйте последний запуск в [GitHub Actions](https://github.com/overdoseperc-rgb/Petstore/actions/workflows/tests.yml). Количество и исход каждого теста появляются в разделе Summary; файл `PetstoreResults.trx` доступен как артефакт `petstore-test-results`.
 
-## Что проверяется
+## Предыдущие результаты
 
-| Тест | Проверяемые действия | Ожидаемый результат |
-| --- | --- | --- |
-| `PetTest` | POST /pet; GET /pet/{id}; PUT /pet; GET /pet/{id}; DELETE /pet; GET /pet/{id} | Корректные ID, имя и статус; после удаления — HTTP 404 |
-| `StoreTest` | GET /store/inventory; POST /store/order; GET /store/order/{id}; DELETE /store/order/{id}; GET /store/order/{id} | Неотрицательные остатки; корректные поля заказа; после удаления — HTTP 404 |
+В исходном README был указан результат от **09.10.2026: 2 passed, 0 failed**. Этот результат относился к старым двум объединённым тестам. Исходный TRX того запуска отсутствует, поэтому историческая запись не подтверждена машинным отчётом.
 
-## Получение актуальных результатов
-
-1. Открыть вкладку **Actions** в репозитории.
-2. Выбрать workflow **Petstore API Tests**.
-3. Запустить **Run workflow** или дождаться запуска после push.
-4. Открыть выполнение: в **Summary** появится таблица результатов.
-5. Скачать артефакт `petstore-test-results` с файлом `PetstoreResults.trx`.
-
-Локальный запуск:
+## Локальный запуск
 
 ```bash
 dotnet test Petstore.Tests.csproj --logger "trx;LogFileName=PetstoreResults.trx" --results-directory TestResults
 ```
 
-Тесты обращаются к общедоступному API. Возможны нестабильные результаты из-за доступности сервера и изменений данных другими пользователями. Для следующих запусков ориентируйтесь на новый отчёт TRX, а не на историческую запись выше.
+API публичный и общий, поэтому тесты могут зависеть от доступности сервера и действий других пользователей.
